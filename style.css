@@ -364,4 +364,102 @@ body.dark-theme code {
     max-width: 200px;
     padding: 8px 12px;
   }
+
+  /* Убираем переходы при смене темы */
+  body.theme-changing *,
+  body.theme-changing *::before,
+  body.theme-changing *::after {
+    transition: none !important;
+  }
+
+  .block {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform; /* Для оптимизации */
+  }
+
+  .block.visible {
+  opacity: 1;
+  transform: translateY(0);
+  }
+ 
+/* Основной контейнер переключателя */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+  user-select: none;
+}
+
+.switch {
+  -webkit-tap-highlight-color: transparent; /* убирает серую вспышку на мобилках */
+  user-select: none;
+}
+
+/* Скрытый input */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Ползунок (фон) */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: background-color 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+/* Иконки */
+.slider .icon {
+  font-size: 12px;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Кружок */
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  top: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.4s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Активное состояние */
+.switch input:checked + .slider {
+  background-color: #4caf50;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+
+.slider.animated {
+  transition: background-color 0.4s ease;
+}
+
+.slider.animated::before {
+  transition: transform 0.4s ease;
+}
+
+.slider.animated .icon {
+  transition: opacity 0.3s ease;
+}
 }
