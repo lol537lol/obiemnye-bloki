@@ -110,8 +110,19 @@
       <li>Бета-версии теперь будут содержать только исправления ошибок, без больших нововведений.</li>
       <li>Добавлена тестовая поддержка тёмной темы</li>
       <li>Удалены неработающие блоки версий</li>
-      <li>Реализован счётчик посещений сайта (общее количество уникальных пользователей)</li>
+      <li>Реализован счётчик посещений сайта (общее количество пользователей)</li>
       <li>Добавлен новый блок с настройками сайта</li>
+    </ul>
+    </div>
+    <div class="">
+      <h3>Версия 0.1.0-beta test 2 (последние релизы)</h3>
+     <ul>
+      <li>Бета-версии теперь будут содержать только исправления ошибок, без больших нововведений.</li>
+      <li>Улучшен счётчик посещений: теперь он работает с Firebase Firestore</li>
+      <li>Добавлена псевдо "анимация" счётчика посещеных пользователей</li>
+      <li>Добавлена анимация точек при загрузке счётчика</li>
+      <li>Исправлены ошибки с тёмной темой</li>
+      <li>Исправлены ошибки с отображением счётчика на мобильных устройствах</li>
     </ul>
     </div>
   </div>
@@ -129,13 +140,13 @@
     </div>
 
     <div class="visitor-counter" style="margin-top: 10px;">
-      👥 Этот сайт посетило: <span id="visitorCount">Загрузка...</span>
+      <span id="visitorCount">Загрузка</span><span id="dots"></span>
     </div>
   </div>
 
   <!-- Угловой блок с версией и GitHub -->
   <div class="corner-version-block">
-    <strong>v0.1.0-beta test 1</strong><br />
+    <strong>v0.1.0-beta test 2</strong><br />
     <code>Исходный код страницы доступен через</code>
     <a href="https://github.com/lol537lol/obiemnye-bloki" target="_blank">GitHub</a>
   </div>
@@ -159,58 +170,75 @@
         toggle.checked = true;
       }
 
-      // Счётчик посещений с Firebase Firestore
-      const { firebaseDb, firebaseHelpers } = window;
-      const { doc, getDoc, setDoc, runTransaction } = firebaseHelpers;
-
-      const counterDoc = doc(firebaseDb, "visits", "counter");
+      // Анимация точек
       const visitorCountElem = document.getElementById('visitorCount');
+      let dotCount = 0;
+      const loadingInterval = setInterval(() => {
+        dotCount = (dotCount + 1) % 4;
+        visitorCountElem.textContent = 'Загрузка' + '.'.repeat(dotCount);
+      }, 500);
 
-      const hasVisited = localStorage.getItem('hasVisited');
+      const delay = Math.random() * 4000 + 1000;
+      await new Promise(resolve => setTimeout(resolve, delay));
 
-      if (!hasVisited) {
-        try {
-          // Запускаем транзакцию, чтобы корректно увеличить счётчик
-          const newCount = await runTransaction(firebaseDb, async (transaction) => {
-            const docSnap = await transaction.get(counterDoc);
-            if (!docSnap.exists()) {
-              transaction.set(counterDoc, { count: 1 });
-              return 1;
-            }
-            const currentCount = docSnap.data().count || 0;
-            const updatedCount = currentCount + 1;
-            transaction.update(counterDoc, { count: updatedCount });
-            return updatedCount;
-          });
-          visitorCountElem.textContent = newCount;
-          localStorage.setItem('hasVisited', 'true');
-          localStorage.setItem('visitorCount', newCount);
-        } catch (e) {
-          console.error("Ошибка при обновлении счётчика:", e);
-          visitorCountElem.textContent = "Ошибка загрузки";
+      // Счётчик посещений с Firebase Firestore
+  const { firebaseDb, firebaseHelpers } = window;
+  const { doc, getDoc, setDoc, runTransaction } = firebaseHelpers;
+  const counterDoc = doc(firebaseDb, "visits", "counter");
+  const hasVisited = localStorage.getItem('hasVisited');
+  let count = 0;
+
+  try {
+    if (!hasVisited) {
+      count = await runTransaction(firebaseDb, async (transaction) => {
+        const docSnap = await transaction.get(counterDoc);
+        if (!docSnap.exists()) {
+          transaction.set(counterDoc, { count: 1 });
+          return 1;
         }
+        const currentCount = docSnap.data().count || 0;
+        const updatedCount = currentCount + 1;
+        transaction.update(counterDoc, { count: updatedCount });
+        return updatedCount;
+      });
+      localStorage.setItem('hasVisited', 'true');
+      localStorage.setItem('visitorCount', count);
+    } else {
+      const storedCount = localStorage.getItem('visitorCount');
+      if (storedCount) {
+        count = parseInt(storedCount, 10);
       } else {
-        // Если уже был, просто показываем последнее сохранённое число
-        const storedCount = localStorage.getItem('visitorCount');
-        if (storedCount) {
-          visitorCountElem.textContent = storedCount;
+        const docSnap = await getDoc(counterDoc);
+        if (docSnap.exists()) {
+          count = docSnap.data().count;
+          localStorage.setItem('visitorCount', count);
         } else {
-          // Если по какой-то причине нет, подгрузим из Firestore
-          try {
-            const docSnap = await getDoc(counterDoc);
-            if (docSnap.exists()) {
-              visitorCountElem.textContent = docSnap.data().count;
-              localStorage.setItem('visitorCount', docSnap.data().count);
-            } else {
-              visitorCountElem.textContent = 0;
-            }
-          } catch (e) {
-            console.error(e);
-            visitorCountElem.textContent = "Ошибка загрузки";
-          }
+          count = 0;
         }
       }
-    });
+    }
+
+    clearInterval(loadingInterval);
+    animateCount(0, count, 1000);
+  } catch (e) {
+    clearInterval(loadingInterval);
+    console.error("Ошибка при загрузке счётчика:", e);
+    visitorCountElem.textContent = "Ошибка загрузки";
+  }
+
+  function animateCount(from, to, duration) {
+    const start = performance.now();
+    function frame(time) {
+      const progress = Math.min((time - start) / duration, 1);
+      const current = Math.floor(from + (to - from) * progress);
+      visitorCountElem.textContent = `👥 Этот сайт посетило: ${current} пользователей.`;
+      if (progress < 1) {
+        requestAnimationFrame(frame);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+});
   </script>
 </body>
 </html>
