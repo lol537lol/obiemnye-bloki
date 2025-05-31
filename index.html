@@ -2,10 +2,34 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Объемные блоки</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="images/avatar.png" />
+
+  <!-- Firebase SDK (модульная версия) -->
+  <script type="module">
+    // Импорты из CDN Firebase JS SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, runTransaction } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwT6LO65isOjDAlXpfZW8QyLLxNAabECc",
+      authDomain: "my-test-project-d03c8.firebaseapp.com",
+      projectId: "my-test-project-d03c8",
+      storageBucket: "my-test-project-d03c8.firebasestorage.app",
+      messagingSenderId: "29018722634",
+      appId: "1:29018722634:web:c0fff08ccf752a8713f1b3",
+      measurementId: "G-MWW7WMT0Z8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.firebaseApp = app;
+    window.firebaseDb = db;
+    window.firebaseHelpers = { doc, getDoc, setDoc, runTransaction };
+  </script>
 </head>
 <body>
   <!-- Блок разработчика -->
@@ -38,41 +62,41 @@
   <div class="block changelog-container">
     <h2 style="text-align: center; font-size: 28px; font-weight: bold;">🛠️ Список изменений этой страницы</h2>
 
-    <!-- Подблоки версий -->
-    <div class="changelog-block">
-      <h3>Версия 0.0.1</h3>
+    <!-- Версии -->
+    <div class="">
+      <h3>Версия 0.0.1-alpha</h3>
       <ul><li>Создан основной HTML-файл</li><li>Добавлены первые стили</li></ul>
     </div>
-    <div class="changelog-block">
-      <h3>Версия 0.0.2</h3>
+    <div class="">
+      <h3>Версия 0.0.2-alpha</h3>
       <ul><li>Добавлены блоки с текстом</li><li>Стили переработаны под SCSS → CSS</li></ul>
     </div>
-    <div class="changelog-block">
-      <h3>Версия 0.0.3</h3>
+    <div class="">
+      <h3>Версия 0.0.3-alpha</h3>
       <ul><li>Подключен красивый фон и блюр</li><li>Сделан блок с профилем разработчика</li></ul>
     </div>
-    <div class="changelog-block">
-      <h3>Версия 0.0.4</h3>
+    <div class="">
+      <h3>Версия 0.0.4-alpha</h3>
       <ul><li>Добавлен примерный блок</li><li>Оптимизирована структура блоков</li></ul>
     </div>
-    <div class="changelog-block">
-      <h3>Версия 0.0.5</h3>
+    <div class="">
+      <h3>Версия 0.0.5-alpha</h3>
       <ul><li>Улучшен стиль аватара</li><li>Добавлены визуальные эффекты при наведении</li></ul>
     </div>
-    <div class="changelog-block">
-      <h3>Версия 0.0.6</h3>
+    <div class="">
+      <h3>Версия 0.0.6-alpha</h3>
       <ul><li>Подключён favicon</li><li>Добавлен блок "Список изменений"</li></ul>
     </div>
-    <div class="changelog-block">
-      <h3>Версия 0.0.7</h3>
-      <ul><li>Добавлены эффекты к текстам</li><li>Обновлены стили и анимации ссылок</li><li>Исправлены баги с ссылками гитхаб и телеграмм.</li></ul>
+    <div class="">
+      <h3>Версия 0.0.7-alpha</h3>
+      <ul><li>Добавлены эффекты к текстам</li><li>Обновлены стили и анимации ссылок</li><li>Исправлены баги с ссылками гитхаб и телеграм.</li></ul>
     </div>
-    <div class="changelog-block">
-      <h3>Версия 0.0.8</h3>
+    <div class="">
+      <h3>Версия 0.0.8-alpha</h3>
       <ul><li>Исправлены баги с ссылками</li><li>Страница теперь общедоступна!</li></ul>
     </div>
-    <div class="changelog-block">
-      <h3>Версия 0.0.9</h3>
+    <div class="">
+      <h3>Версия 0.0.9-alpha</h3>
       <ul>
         <li>Добавлен информационный блок "О проекте"</li>
         <li>Добавлен стиль для встроенного кода: <code>&lt;code&gt;...&lt;/code&gt;</code></li>
@@ -80,15 +104,113 @@
         <li>Переименован стиль <code>.vk-link</code> в <code>.telegram-link</code></li>
       </ul>
     </div>
+    <div class="">
+      <h3>Версия 0.1.0-beta test 1 (последние релизы)</h3>
+     <ul>
+      <li>Бета-версии теперь будут содержать только исправления ошибок, без больших нововведений.</li>
+      <li>Добавлена тестовая поддержка тёмной темы</li>
+      <li>Удалены неработающие блоки версий</li>
+      <li>Реализован счётчик посещений сайта (общее количество уникальных пользователей)</li>
+      <li>Добавлен новый блок с настройками сайта</li>
+    </ul>
+    </div>
+  </div>
+
+  <!-- Блок с тёмной темой + счётчиком -->
+  <div class="block">
+    <h2>⚙️ Настройки</h2>
+    
+    <div class="theme-toggle-wrapper">
+      <label class="switch" title="Тёмная тема">
+        <input type="checkbox" id="darkThemeToggle" />
+        <span class="slider"></span>
+      </label>
+      <span class="theme-label">Тёмная тема</span>
+    </div>
+
+    <div class="visitor-counter" style="margin-top: 10px;">
+      👥 Этот сайт посетило: <span id="visitorCount">Загрузка...</span>
+    </div>
+  </div>
+
+  <!-- Угловой блок с версией и GitHub -->
+  <div class="corner-version-block">
+    <strong>v0.1.0-beta test 1</strong><br />
+    <code>Исходный код страницы доступен через</code>
+    <a href="https://github.com/lol537lol/obiemnye-bloki" target="_blank">GitHub</a>
   </div>
 
   <!-- Невидимый отступ -->
   <div style="height: 120px;"></div>
 
-  <!-- Угловой блок с версией и GitHub -->
-  <div class="corner-version-block">
-    <strong>v0.0.9</strong><br />
-    Исходный код страницы теперь доступен через <a href="https://github.com/lol537lol/obiemnye-bloki" target="_blank">GitHub</a>
-  </div>
+  <script type="module">
+    // ТЁМНАЯ ТЕМА
+    const toggle = document.getElementById('darkThemeToggle');
+    toggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark-theme', toggle.checked);
+      localStorage.setItem('darkTheme', toggle.checked);
+    });
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Восстановим тему
+      const darkMode = localStorage.getItem('darkTheme') === 'true';
+      if (darkMode) {
+        document.body.classList.add('dark-theme');
+        toggle.checked = true;
+      }
+
+      // Счётчик посещений с Firebase Firestore
+      const { firebaseDb, firebaseHelpers } = window;
+      const { doc, getDoc, setDoc, runTransaction } = firebaseHelpers;
+
+      const counterDoc = doc(firebaseDb, "visits", "counter");
+      const visitorCountElem = document.getElementById('visitorCount');
+
+      const hasVisited = localStorage.getItem('hasVisited');
+
+      if (!hasVisited) {
+        try {
+          // Запускаем транзакцию, чтобы корректно увеличить счётчик
+          const newCount = await runTransaction(firebaseDb, async (transaction) => {
+            const docSnap = await transaction.get(counterDoc);
+            if (!docSnap.exists()) {
+              transaction.set(counterDoc, { count: 1 });
+              return 1;
+            }
+            const currentCount = docSnap.data().count || 0;
+            const updatedCount = currentCount + 1;
+            transaction.update(counterDoc, { count: updatedCount });
+            return updatedCount;
+          });
+          visitorCountElem.textContent = newCount;
+          localStorage.setItem('hasVisited', 'true');
+          localStorage.setItem('visitorCount', newCount);
+        } catch (e) {
+          console.error("Ошибка при обновлении счётчика:", e);
+          visitorCountElem.textContent = "Ошибка загрузки";
+        }
+      } else {
+        // Если уже был, просто показываем последнее сохранённое число
+        const storedCount = localStorage.getItem('visitorCount');
+        if (storedCount) {
+          visitorCountElem.textContent = storedCount;
+        } else {
+          // Если по какой-то причине нет, подгрузим из Firestore
+          try {
+            const docSnap = await getDoc(counterDoc);
+            if (docSnap.exists()) {
+              visitorCountElem.textContent = docSnap.data().count;
+              localStorage.setItem('visitorCount', docSnap.data().count);
+            } else {
+              visitorCountElem.textContent = 0;
+            }
+          } catch (e) {
+            console.error(e);
+            visitorCountElem.textContent = "Ошибка загрузки";
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>

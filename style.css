@@ -8,6 +8,8 @@ body {
   flex-direction: column;
   align-items: center;
   backdrop-filter: blur(2px);
+  transition: background-color 0.3s ease;
+  position: relative;
 }
 
 /* ОБЪЁМНЫЙ СТИЛЬ ДЛЯ БЛОКОВ */
@@ -26,6 +28,7 @@ body {
     inset 1px 1px 3px rgba(255, 255, 255, 0.6),
     inset -2px -2px 4px rgba(0, 0, 0, 0.08),
     0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .block h2 {
@@ -33,13 +36,14 @@ body {
   font-size: 24px;
   color: #222;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .block p {
   font-size: 16px;
   color: #444;
   text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
+  transition: color 0.3s ease;
 }
 
 .profile {
@@ -60,7 +64,7 @@ body {
     inset 1px 1px 2px rgba(255, 255, 255, 0.4),
     inset -2px -2px 3px rgba(0, 0, 0, 0.08),
     0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .avatar:hover {
@@ -72,7 +76,7 @@ body {
   font-size: 22px;
   color: #1f1f1f;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .info h2:hover {
@@ -99,7 +103,7 @@ body {
   color: #229ED9;
   text-decoration: none;
   position: relative;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .telegram-link::after {
@@ -140,7 +144,12 @@ body {
     0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 100;
   text-align: left;
-  max-width: 220px;
+  max-width: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .corner-version-block strong {
@@ -152,6 +161,7 @@ body {
   color: #0077cc;
   text-decoration: none;
   font-weight: bold;
+  transition: color 0.3s ease;
 }
 
 .corner-version-block a:hover {
@@ -167,4 +177,191 @@ code {
   border-radius: 6px;
   color: #e63946;
   box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ТЕМНАЯ ТЕМА */
+body.dark-theme::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5); /* затемнение */
+  pointer-events: none;
+  z-index: -1;
+  backdrop-filter: blur(2px);
+}
+
+body.dark-theme::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.6) 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+body.dark-theme {
+  color: #ddd;
+}
+
+body.dark-theme .block {
+  background: rgba(20, 20, 20, 0.9); /* вместо градиента */
+  border-color: rgba(80, 80, 80, 0.8);
+  color: #eee;
+  box-shadow:
+    inset 1px 1px 3px rgba(100, 100, 100, 0.3),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.6),
+    0 6px 12px rgba(0, 0, 0, 0.7);
+  backdrop-filter: none; /* отключи blur в тёмной теме */
+}
+
+body.dark-theme .block h2 {
+  color: #fff;
+  text-shadow: none;
+}
+
+body.dark-theme .block p {
+  color: #ccc;
+  text-shadow: none;
+}
+
+body.dark-theme .avatar {
+  border-color: rgba(100, 100, 100, 0.6);
+  background: #2a2a2a; /* убрать прозрачный градиент */
+  box-shadow:
+    inset 0 0 2px rgba(255, 255, 255, 0.05),
+    0 4px 10px rgba(0, 0, 0, 0.6);
+  backdrop-filter: none;
+}
+
+body.dark-theme .info h2 {
+  color: #eee;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+body.dark-theme .role {
+  color: #aaa;
+  text-shadow: none;
+}
+
+body.dark-theme .telegram-link {
+  color: #60aaff;
+}
+
+body.dark-theme .telegram-link:hover {
+  color: #aaddff;
+  text-shadow: 0 0 10px #aaddff;
+}
+
+body.dark-theme .corner-version-block {
+  background: rgba(30, 30, 30, 0.95); /* убрать градиент */
+  border-color: rgba(80, 80, 80, 0.9);
+  box-shadow:
+    inset 0 0 2px rgba(255, 255, 255, 0.1),
+    0 4px 10px rgba(0, 0, 0, 0.8);
+  backdrop-filter: none;
+}
+
+body.dark-theme .corner-version-block strong {
+  color: #eee;
+}
+
+body.dark-theme .corner-version-block {
+  color: #eee;
+}
+
+body.dark-theme .corner-version-block a {
+  color: #80bfff;
+}
+
+body.dark-theme .corner-version-block a:hover {
+  color: #aaddff;
+  text-decoration: underline;
+}
+
+body.dark-theme code {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ff6f61;
+  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ */
+.theme-toggle {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  border-radius: 14px;
+  background: #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow:
+    inset 1px 1px 3px rgba(255, 255, 255, 0.7),
+    inset -1px -1px 3px rgba(200, 200, 200, 0.7);
+}
+
+.theme-toggle.dark {
+  background: #333;
+  box-shadow:
+    inset 1px 1px 3px rgba(0, 0, 0, 0.9),
+    inset -1px -1px 3px rgba(60, 60, 60, 0.8);
+}
+
+.theme-toggle .toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: left 0.3s ease, background-color 0.3s ease;
+}
+
+.theme-toggle.dark .toggle-thumb {
+  left: 27px;
+  background: #eee;
+}
+
+/* Всплывающая подсказка для переключателя */
+.theme-toggle:hover::after {
+  content: "Переключить тему";
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #444;
+  color: #eee;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 600px) {
+  body {
+    padding: 20px;
+  }
+
+  .block {
+    width: 100%;
+    padding: 16px 20px;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    margin-right: 16px;
+  }
+
+  .corner-version-block {
+    font-size: 12px;
+    max-width: 200px;
+    padding: 8px 12px;
+  }
 }
